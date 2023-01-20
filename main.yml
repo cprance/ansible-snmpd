@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: Install snmpd
+    yum:
+      name: net-snmp
+      state: latest
+      update_cache: yes
+  - name: Enable snmpd
+    service:
+      name: snmpd
+      enabled: yes
+      state: started
+  - name: Download snmpd config file
+    get_url:
+      url: http://192.168.1.88/snmpd.conf
+      dest: /etc/snmp/snmpd.conf
+  - name: Restart snmpd
+    service:
+      name: snmpd
+      state: restarted    
