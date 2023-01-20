@@ -2,11 +2,17 @@
 - hosts: all
   become: true
   tasks:
-  - name: Install snmpd
+  - name: Install snmpd on CentOS
     yum:
       name: net-snmp
       state: latest
       update_cache: yes
+    when: ansible_distribution == "CentOS"
+  - name: Install snmpd on Debian
+    apt:
+      name: snmpd
+      state: latest
+    when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
   - name: Enable snmpd
     service:
       name: snmpd
